@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Holidays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+<div id="app">
+    <section class="hero is-light is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    {{ one }}
+                </h1>
+                <h2 class="subtitle">
+                    {{ two }}
+                </h2>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: function () {
+            return {
+                "date": 1544808000000,
+                str: '123',
+                one: '',
+                two: ''
+            };
+        },
+        methods: {
+            calc: function () {
+
+                var diff = (this.date - (new Date)) / 1e3,
+                    tmp = '',
+                    x;
+
+                this.one = "";
+                this.two = "";
+
+                if (diff < 0) {
+                    this.one = 'Holidays!!';
+                    return;
+                }
+
+                x = Math.floor(diff / (60 * 60 * 24));
+
+                if (x > 0) {
+                    this.one += x + (x < 2 ? " Day" : " Days");
+                }
+
+                x = Math.floor((diff % (60 * 60 * 24)) / (60 * 60));
+                tmp += ("" + x).padStart(2, "0") + ":";
+                x = Math.floor(((diff % (60 * 60 * 24)) % (60 * 60)) / 60);
+                tmp += ("" + x).padStart(2, "0") + ":";
+                x = Math.floor(((diff % (60 * 60 * 24)) % (60 * 60)) % 60);
+                tmp += ("" + x).padStart(2, "0");
+
+                if (this.one.length) {
+                    this.two = tmp
+                } else {
+                    this.one = tmp;
+                }
+            }
+        },
+        mounted() {
+            setInterval(this.calc, 1e3);
+        }
+    });
+</script>
+</body>
+</html>
